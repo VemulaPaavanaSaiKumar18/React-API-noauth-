@@ -1,0 +1,147 @@
+openapi: 3.0.3
+info:
+  title: Todos - OpenAPI 3.0
+  description: Data from some todos jsonpaceholder API
+  termsOfService: http://swagger.io/terms/
+  version: 1.0.11
+externalDocs:
+  description: Find out more about jsonpaceholder
+  url: https://jsonplaceholder.typicode.com/
+paths:
+  /todos:
+    get:
+      tags:
+        - todos
+      summary: Finds todos by list
+      operationId: findtodoslist
+      parameters:
+        - name: list
+          in: query
+          description: values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: available
+            enum:
+              - available
+              - pending
+              - sold
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/todos"
+        "400":
+          description: Invalid status value
+    post:
+      tags:
+        - todos
+      summary: Add a new todos to the list
+      description: Add a new todos to the list
+      operationId: addtodos
+      requestBody:
+        description: Create a new todos in the list
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/todos"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/todos"
+        "405":
+          description: Invalid input
+  /todos/{id}:
+    put:
+      tags:
+        - todos
+      summary: Update todos
+      description: Update an existing todos by userid
+      operationId: updatetodos
+      requestBody:
+        description: Update an existent todos in the list
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/todos"
+        required: true
+      responses:
+        "200":
+          description: Successfuly added todos in list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/todos"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: todos not found
+        "405":
+          description: Validation exception
+    get:
+      tags:
+        - todos
+      summary: Find todos by ID
+      description: Returns a single todo
+      operationId: gettodoById
+      parameters:
+        - name: todoid
+          in: header
+          description: ID of todo to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/todos"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: todo not found
+    delete:
+      tags:
+        - todos
+      summary: Deletes a todos
+      description: delete a todo
+      operationId: deletetodo
+      parameters:
+        - name: userid
+          in: header
+          description: to delete todo
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "400":
+          description: Invalid todo value
+components:
+  schemas:
+    todos:
+      type: object
+      properties:
+        userid:
+          type: integer
+        id:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: boolean
+          example:
+            userid: 1
+            id: 1
+            title: "delectus aut autem"
+            completed: true
